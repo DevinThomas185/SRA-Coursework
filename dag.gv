@@ -1,5 +1,5 @@
 digraph G {
-	rankdir=LR size="8,5"
+	rankdir=TB size="8,5"
 	node [shape=circle]
 	1
 	2

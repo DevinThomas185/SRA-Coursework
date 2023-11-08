@@ -4,23 +4,24 @@ from tabulate import tabulate
 
 
 # TODO: Needs to account for precedence constraints
-def select_neighbour_from_neighbourhood(candidate: list, next_index_to_swap: int):
-    # Select the next pair of jobs to swap
-    i, j = next_index_to_swap, next_index_to_swap + 1
+def neighbourhood_generator(candidate: list, last_index_swapped: int):
+    i = last_index_swapped + 1 if last_index_swapped != len(candidate) - 2 else 0
 
-    # Swap the jobs
-    next_candidate = candidate.copy()
-    swapped_jobs = (next_candidate[i], next_candidate[j])
-    next_candidate[i], next_candidate[j] = next_candidate[j], next_candidate[i]
+    while i != last_index_swapped:
+        if i == len(candidate) - 2:
+            i = 0
+        else:
+            i += 1
 
-    if next_index_to_swap == len(candidate) - 2:
-        next_index_to_swap = 0
-    else:
-        next_index_to_swap += 1
+        next_candidate = candidate.copy()
+        next_candidate[i], next_candidate[i + 1] = (
+            next_candidate[i + 1],
+            next_candidate[i],
+        )
 
-    # TODO: Does the order of the swapped jobs need to sorted (to check if already in Tabu List)
+        yield next_candidate, (next_candidate[i], next_candidate[i + 1]), i - 1
 
-    return next_candidate, swapped_jobs, next_index_to_swap
+    yield None, None, None
 
 
 def tabu_search(
@@ -37,48 +38,50 @@ def tabu_search(
 
     current_candidate = initial_candidate
     current_cost = cost_function(initial_candidate)
+    seen_candidates = [initial_candidate.copy()]
 
     tabu_list = []
 
     # TODO: Figure out how to do this Tabu flag
     tabu = False
 
-    i, j = 0, 0
-    next_index_to_swap = 0
+    last_index_swapped = len(initial_candidate) - 2
 
     table = [
         [0, current_candidate.copy(), current_cost, tabu_list.copy(), best_cost, tabu]
     ]
 
     for k in range(1, iterations):
+        neighbours = neighbourhood_generator(current_candidate, last_index_swapped)
         while True:
-            (
-                next_candidate,
-                swapped_jobs,
-                next_index_to_swap,
-            ) = select_neighbour_from_neighbourhood(
-                current_candidate, next_index_to_swap
-            )
+            next_candidate, swapped_jobs, last_index_swapped = next(neighbours)
+
+            # No more candidates left to check
+            if next_candidate is None:
+                break
 
             next_cost = cost_function(next_candidate)
+            delta = current_cost - next_cost
+
+            # Update best candidate if necessary
+            if next_cost < best_cost:
+                best_candidate = next_candidate
+                best_cost = next_cost
+
+            # Append row to Tabu Search table
+            tabu = True if next_candidate in seen_candidates else False
 
             table.append(
                 [k, next_candidate.copy(), next_cost, tabu_list.copy(), best_cost, tabu]
             )
 
-            delta = current_cost - next_cost
+            seen_candidates.append(next_candidate)
 
-            if delta > -gamma and swapped_jobs not in tabu_list:
-                tabu = True
+            # Move to next iteration if meets aspiration criteria or is better than current best
+            if (
+                delta > -gamma and swapped_jobs not in tabu_list
+            ) or next_cost < best_cost:
                 break
-
-            if next_cost < best_cost:
-                break
-
-        # Update best candidate if necessary
-        if next_cost < best_cost:
-            best_candidate = next_candidate
-            best_cost = next_cost
 
         current_candidate = next_candidate
         current_cost = next_cost
@@ -91,12 +94,13 @@ def tabu_search(
             tabu_list.pop(0)
 
     if verbose:
+        print()
         print(
             tabulate(
                 table,
                 headers=[
                     "Solution",
-                    "Candidates",
+                    "Candidate",
                     "Cost",
                     "Tabu List",
                     "Best Cost",

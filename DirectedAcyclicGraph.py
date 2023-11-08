@@ -24,7 +24,7 @@ class DirectedAcyclicGraph:
     def print_graph(self) -> None:
         g = Digraph("G", filename="dag.gv")
 
-        g.attr(rankdir="LR", size="8,5")
+        g.attr(rankdir="TB", size="8,5")
 
         g.attr("node", shape="circle")
 
