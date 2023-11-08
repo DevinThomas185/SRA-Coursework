@@ -1,8 +1,8 @@
 from Job import Job
 from Problem import Problem
 
-class ClassProblem(Problem):
 
+class ClassProblem(Problem):
     def __init__(self):
         super().__init__()
 

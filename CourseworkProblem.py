@@ -1,8 +1,8 @@
 from Job import Job, JobType
 from Problem import Problem
 
-class CWProblem(Problem):
 
+class CourseworkProblem(Problem):
     def __init__(self):
         super().__init__()
 

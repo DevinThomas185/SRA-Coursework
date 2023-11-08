@@ -32,7 +32,12 @@ class Job:
     ]
 
     def __init__(
-        self, id: int, due_date: int, type: JobType = None, processing_time: int = 0, weight: int = 1
+        self,
+        id: int,
+        due_date: int,
+        type: JobType = None,
+        processing_time: int = 0,
+        weight: int = 1,
     ):
         self._id = id
         self._type = type
@@ -53,6 +58,6 @@ class Job:
 
     def get_processing_time(self) -> int:
         return self._processing_time
-    
+
     def get_weight(self) -> int:
         return self._weight

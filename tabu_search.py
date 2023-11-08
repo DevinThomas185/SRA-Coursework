@@ -3,6 +3,7 @@ from DirectedAcyclicGraph import DirectedAcyclicGraph
 from tabulate import tabulate
 
 
+# TODO: Needs to account for precedence constraints
 def select_neighbour_from_neighbourhood(candidate: list, next_index_to_swap: int):
     # Select the next pair of jobs to swap
     i, j = next_index_to_swap, next_index_to_swap + 1
@@ -31,7 +32,6 @@ def tabu_search(
     cost_function: callable,
     verbose: bool = False,
 ):
-
     best_candidate = initial_candidate
     best_cost = cost_function(initial_candidate)
 
@@ -39,18 +39,19 @@ def tabu_search(
     current_cost = cost_function(initial_candidate)
 
     tabu_list = []
-    
+
     # TODO: Figure out how to do this Tabu flag
     tabu = False
 
     i, j = 0, 0
     next_index_to_swap = 0
 
-    table = [[0, current_candidate.copy(), current_cost, tabu_list.copy(), best_cost, tabu]]
+    table = [
+        [0, current_candidate.copy(), current_cost, tabu_list.copy(), best_cost, tabu]
+    ]
 
     for k in range(1, iterations):
         while True:
-
             (
                 next_candidate,
                 swapped_jobs,
@@ -61,8 +62,10 @@ def tabu_search(
 
             next_cost = cost_function(next_candidate)
 
-            table.append([k, next_candidate.copy(), next_cost, tabu_list.copy(), best_cost, tabu])
-            
+            table.append(
+                [k, next_candidate.copy(), next_cost, tabu_list.copy(), best_cost, tabu]
+            )
+
             delta = current_cost - next_cost
 
             if delta > -gamma and swapped_jobs not in tabu_list:
@@ -86,7 +89,6 @@ def tabu_search(
         # Remove oldest pair from tabu list if it exceeds the maximum size
         if len(tabu_list) > tabu_list_size:
             tabu_list.pop(0)
-    
 
     if verbose:
         print(
