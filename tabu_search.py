@@ -2,24 +2,36 @@ from Job import Job
 from DirectedAcyclicGraph import DirectedAcyclicGraph
 from tabulate import tabulate
 
+from utilities import format_number
+
 
 # TODO: Needs to account for precedence constraints
-def neighbourhood_generator(candidate: list, last_index_swapped: int):
+def neighbourhood_generator(
+    candidate: list, last_index_swapped: int, graph: DirectedAcyclicGraph
+):
     i = last_index_swapped + 1 if last_index_swapped != len(candidate) - 2 else 0
 
-    while i != last_index_swapped:
-        if i == len(candidate) - 2:
-            i = 0
-        else:
-            i += 1
-
+    while True:
         next_candidate = candidate.copy()
         next_candidate[i], next_candidate[i + 1] = (
             next_candidate[i + 1],
             next_candidate[i],
         )
 
-        yield next_candidate, (next_candidate[i], next_candidate[i + 1]), i - 1
+        # Check if the swap is valid, then yield candidate
+        if (
+            graph.get_transitive_closure()[
+                next_candidate[i + 1].get_id() - 1, next_candidate[i].get_id() - 1
+            ]
+            == 0
+        ):
+            yield next_candidate, (next_candidate[i], next_candidate[i + 1]), i
+
+
+        i = 0 if i == len(candidate) - 2 else i+1
+
+        if i == last_index_swapped+1:
+            break
 
     yield None, None, None
 
@@ -47,12 +59,30 @@ def tabu_search(
 
     last_index_swapped = len(initial_candidate) - 2
 
-    table = [
-        [0, current_candidate.copy(), current_cost, tabu_list.copy(), best_cost, tabu]
-    ]
+    if verbose:
+        table = [
+            [
+                0,
+                current_candidate.copy(),
+                current_cost,
+                tabu_list.copy(),
+                best_cost,
+                tabu,
+            ]
+        ]
 
-    for k in range(1, iterations):
-        neighbours = neighbourhood_generator(current_candidate, last_index_swapped)
+    # Compute transitive closure for neighbourhood generation ensuring no candidates
+    # are generated that violate precedence constraints
+    graph.compute_transitive_closure()
+
+    for k in range(1, iterations + 1):
+        if verbose and k % 1_000 == 0:
+            print(f"Iteration {format_number(k)}")
+
+        neighbours = neighbourhood_generator(
+            current_candidate, last_index_swapped, graph
+        )
+
         while True:
             next_candidate, swapped_jobs, last_index_swapped = next(neighbours)
 
@@ -69,13 +99,21 @@ def tabu_search(
                 best_cost = next_cost
 
             # Append row to Tabu Search table
-            tabu = True if next_candidate in seen_candidates else False
+            if verbose:
+                # Only track seen candidates if we are printing, since it is needed for the Tabu flag
+                tabu = True if next_candidate in seen_candidates else False
+                seen_candidates.append(next_candidate)
 
-            table.append(
-                [k, next_candidate.copy(), next_cost, tabu_list.copy(), best_cost, tabu]
-            )
-
-            seen_candidates.append(next_candidate)
+                table.append(
+                    [
+                        k,
+                        next_candidate.copy(),
+                        next_cost,
+                        tabu_list.copy(),
+                        best_cost,
+                        tabu,
+                    ]
+                )
 
             # Move to next iteration if meets aspiration criteria or is better than current best
             if (
@@ -108,5 +146,6 @@ def tabu_search(
                 ],
             )
         )
+        print(f"Best Schedule {best_candidate} with cost {best_cost}")
 
     return best_candidate, best_cost

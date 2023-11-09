@@ -13,12 +13,12 @@ class JobType(Enum):
 
 PROCESSING_TIMES = {
     JobType.VII: 14,
-    JobType.EMBOSS: 5,
-    JobType.MUSE: 18,
-    JobType.NIGHT: 3,
-    JobType.BLUR: 2,
-    JobType.WAVE: 10,
-    JobType.ONNX: 6,
+    JobType.EMBOSS: 2,
+    JobType.MUSE: 10,
+    JobType.NIGHT: 18,
+    JobType.BLUR: 5,
+    JobType.WAVE: 6,
+    JobType.ONNX: 3,
 }
 
 
@@ -29,6 +29,7 @@ class Job:
         "_due_date",
         "_processing_time",
         "_weight",
+        "_colour",
     ]
 
     def __init__(
@@ -38,6 +39,7 @@ class Job:
         type: JobType = None,
         processing_time: int = 0,
         weight: int = 1,
+        colour: str = None,
     ):
         self._id = id
         self._type = type
@@ -46,6 +48,7 @@ class Job:
             processing_time if type is None else PROCESSING_TIMES[type]
         )
         self._weight = weight
+        self._colour = colour
 
     def __repr__(self):
         return str(self._id)
@@ -61,3 +64,6 @@ class Job:
 
     def get_weight(self) -> int:
         return self._weight
+
+    def get_colour(self) -> str:
+        return self._colour

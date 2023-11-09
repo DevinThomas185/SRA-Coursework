@@ -7,6 +7,7 @@ class DirectedAcyclicGraph:
     __slots__ = [
         "_jobs",
         "_incidence_matrix",
+        "_transitive_closure"
     ]
 
     def __init__(self):
@@ -20,6 +21,19 @@ class DirectedAcyclicGraph:
 
     def add_precendence(self, job: Job, precendence: Job) -> None:
         self._incidence_matrix[job.get_id() - 1, precendence.get_id() - 1] = 1
+
+    def compute_transitive_closure(self) -> None:
+        # Compute the transitive closure of the incidence matrix. I.e if matrix[i, j] == 1, and matrix[j, k] == 1, then matrix[i, k] == 1
+        self._transitive_closure = self._incidence_matrix.copy()
+        for i in range(len(self._jobs)):
+            for j in range(len(self._jobs)):
+                if self._transitive_closure[j, i] == 1:
+                    for k in range(len(self._jobs)):
+                        if self._transitive_closure[i, k] == 1:
+                            self._transitive_closure[j, k] = 1
+
+    def get_transitive_closure(self) -> np.ndarray:
+        return self._transitive_closure
 
     def print_graph(self) -> None:
         g = Digraph("G", filename="dag.gv")

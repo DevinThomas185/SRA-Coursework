@@ -1,42 +1,50 @@
 from Job import Job, JobType
 from Problem import Problem
+from matplotlib import pyplot as plt
+from matplotlib import colors
+import numpy as np
 
 
 class CourseworkProblem(Problem):
     def __init__(self):
         super().__init__()
 
-        j1 = Job(1, 172, JobType.ONNX)
-        j2 = Job(2, 82, JobType.MUSE)
-        j3 = Job(3, 18, JobType.EMBOSS)
-        j4 = Job(4, 61, JobType.EMBOSS)
-        j5 = Job(5, 93, JobType.BLUR)
-        j6 = Job(6, 71, JobType.EMBOSS)
-        j7 = Job(7, 217, JobType.VII)
-        j8 = Job(8, 295, JobType.BLUR)
-        j9 = Job(9, 290, JobType.WAVE)
-        j10 = Job(10, 287, JobType.BLUR)
-        j11 = Job(11, 253, JobType.BLUR)
-        j12 = Job(12, 307, JobType.EMBOSS)
-        j13 = Job(13, 279, JobType.ONNX)
-        j14 = Job(14, 73, JobType.ONNX)
-        j15 = Job(15, 355, JobType.BLUR)
-        j16 = Job(16, 34, JobType.WAVE)
-        j17 = Job(17, 233, JobType.WAVE)
-        j18 = Job(18, 77, JobType.WAVE)
-        j19 = Job(19, 88, JobType.EMBOSS)
-        j20 = Job(20, 122, JobType.ONNX)
-        j21 = Job(21, 71, JobType.EMBOSS)
-        j22 = Job(22, 181, JobType.ONNX)
-        j23 = Job(23, 340, JobType.VII)
-        j24 = Job(24, 141, JobType.BLUR)
-        j25 = Job(25, 209, JobType.NIGHT)
-        j26 = Job(26, 217, JobType.MUSE)
-        j27 = Job(27, 256, JobType.EMBOSS)
-        j28 = Job(28, 144, JobType.ONNX)
-        j29 = Job(29, 307, JobType.WAVE)
-        j30 = Job(30, 329, JobType.EMBOSS)
-        j31 = Job(31, 269, JobType.EMBOSS)
+        # Define the number of colors you need
+
+        color_map = plt.get_cmap('nipy_spectral')
+        colours = [colors.to_hex(color_map(value)) for value in np.linspace(0, 1, 31)]
+
+        j1 = Job(1, due_date=172, type=JobType.ONNX, colour=colours[0])
+        j2 = Job(2, due_date=82, type=JobType.MUSE, colour=colours[1])
+        j3 = Job(3, due_date=18, type=JobType.EMBOSS, colour=colours[2])
+        j4 = Job(4, due_date=61, type=JobType.EMBOSS, colour=colours[3])
+        j5 = Job(5, due_date=93, type=JobType.BLUR, colour=colours[4])
+        j6 = Job(6, due_date=71, type=JobType.EMBOSS, colour=colours[5])
+        j7 = Job(7, due_date=217, type=JobType.VII, colour=colours[6])
+        j8 = Job(8, due_date=295, type=JobType.BLUR, colour=colours[7])
+        j9 = Job(9, due_date=290, type=JobType.WAVE, colour=colours[8])
+        j10 = Job(10, due_date=287, type=JobType.BLUR, colour=colours[9])
+        j11 = Job(11, due_date=253, type=JobType.BLUR, colour=colours[10])
+        j12 = Job(12, due_date=307, type=JobType.EMBOSS, colour=colours[11])
+        j13 = Job(13, due_date=279, type=JobType.ONNX, colour=colours[12])
+        j14 = Job(14, due_date=73, type=JobType.ONNX, colour=colours[13])
+        j15 = Job(15, due_date=355, type=JobType.BLUR, colour=colours[14])
+        j16 = Job(16, due_date=34, type=JobType.WAVE, colour=colours[15])
+        j17 = Job(17, due_date=233, type=JobType.WAVE, colour=colours[16])
+        j18 = Job(18, due_date=77, type=JobType.WAVE, colour=colours[17])
+        j19 = Job(19, due_date=88, type=JobType.EMBOSS, colour=colours[18])
+        j20 = Job(20, due_date=122, type=JobType.ONNX, colour=colours[19])
+        j21 = Job(21, due_date=71, type=JobType.EMBOSS, colour=colours[20])
+        j22 = Job(22, due_date=181, type=JobType.ONNX, colour=colours[21])
+        j23 = Job(23, due_date=340, type=JobType.VII, colour=colours[22])
+        j24 = Job(24, due_date=141, type=JobType.BLUR, colour=colours[23])
+        j25 = Job(25, due_date=209, type=JobType.NIGHT, colour=colours[24])
+        j26 = Job(26, due_date=217, type=JobType.MUSE, colour=colours[25])
+        j27 = Job(27, due_date=256, type=JobType.EMBOSS, colour=colours[26])
+        j28 = Job(28, due_date=144, type=JobType.ONNX, colour=colours[27])
+        j29 = Job(29, due_date=307, type=JobType.WAVE, colour=colours[28])
+        j30 = Job(30, due_date=329, type=JobType.EMBOSS, colour=colours[29])
+        j31 = Job(31, due_date=269, type=JobType.EMBOSS, colour=colours[30])
 
         self._graph.add_node(j1)
         self._graph.add_node(j2)
