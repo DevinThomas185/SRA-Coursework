@@ -11,14 +11,24 @@ class JobType(Enum):
     ONNX = 6
 
 
+# PROCESSING_TIMES = {
+#     JobType.VII: 14,
+#     JobType.EMBOSS: 2,
+#     JobType.MUSE: 10,
+#     JobType.NIGHT: 18,
+#     JobType.BLUR: 5,
+#     JobType.WAVE: 6,
+#     JobType.ONNX: 3,
+# }
+
 PROCESSING_TIMES = {
-    JobType.VII: 14,
-    JobType.EMBOSS: 2,
-    JobType.MUSE: 10,
-    JobType.NIGHT: 18,
-    JobType.BLUR: 5,
-    JobType.WAVE: 6,
-    JobType.ONNX: 3,
+    JobType.VII: 14.2028,
+    JobType.EMBOSS: 1.579,
+    JobType.MUSE: 10.2260,
+    JobType.NIGHT: 18.3180,
+    JobType.BLUR: 5.4928,
+    JobType.WAVE: 6.0377,
+    JobType.ONNX: 2.6843,
 }
 
 
@@ -37,7 +47,7 @@ class Job:
         id: int,
         due_date: int,
         type: JobType = None,
-        processing_time: int = 0,
+        processing_time: float = 0,
         weight: int = 1,
         colour: str = None,
     ):

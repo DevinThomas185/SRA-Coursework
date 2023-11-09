@@ -5,6 +5,7 @@ from Job import Job
 def format_number(number: int):
     return f"{number:,}"
 
+
 def print_schedule(title: str, schedule: list[Job]):
     # Set up the plot
     fig, ax = plt.subplots()
@@ -32,3 +33,9 @@ def print_schedule(title: str, schedule: list[Job]):
 
     # Show the plot
     plt.show()
+
+
+def print_schedule_to_csv(schedule: list[Job], csv_name: str) -> None:
+    with open(csv_name+".csv", "w") as f:
+        for job in schedule:
+            f.write(f"{job.get_id()},")

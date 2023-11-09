@@ -1,4 +1,4 @@
-def sum_tardiness(candidate) -> int:
+def sum_tardiness(candidate) -> float:
     total_tardiness = 0
     t = 0
 
@@ -9,7 +9,7 @@ def sum_tardiness(candidate) -> int:
     return total_tardiness
 
 
-def sum_weighted_tardiness(candidate) -> int:
+def sum_weighted_tardiness(candidate) -> float:
     total_tardiness = 0
     t = 0
 
