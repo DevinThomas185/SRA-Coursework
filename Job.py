@@ -22,13 +22,13 @@ class JobType(Enum):
 # }
 
 PROCESSING_TIMES = {
-    JobType.VII: 14.2028,
-    JobType.EMBOSS: 1.579,
-    JobType.MUSE: 10.2260,
-    JobType.NIGHT: 18.3180,
-    JobType.BLUR: 5.4928,
-    JobType.WAVE: 6.0377,
-    JobType.ONNX: 2.6843,
+    JobType.VII: 14.2893,
+    JobType.EMBOSS: 1.5929,
+    JobType.MUSE: 10.1456,
+    JobType.NIGHT: 18.3223,
+    JobType.BLUR: 5.4895,
+    JobType.WAVE: 6.0423,
+    JobType.ONNX: 2.6766,
 }
 
 

@@ -37,5 +37,6 @@ def print_schedule(title: str, schedule: list[Job]):
 
 def print_schedule_to_csv(schedule: list[Job], csv_name: str) -> None:
     with open(csv_name+".csv", "w") as f:
-        for job in schedule:
-            f.write(f"{job.get_id()},")
+        for job in schedule[:-1]:
+            f.write(f"{job.get_id()}, ")
+        f.write(f"{schedule[-1].get_id()}")

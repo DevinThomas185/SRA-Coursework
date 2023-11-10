@@ -110,11 +110,12 @@ def main():
     # schedule, cost = run_tabu_search_on_class_problem_2()
     schedule, cost = run_tabu_search_on_coursework_problem(
         gamma=10,
-        iterations=100_000,
+        iterations=10_000_000,
         tabu_list_size=20,
         verbose=False,
     )
-    print_schedule_to_csv(schedule, "sinit")
+    print(schedule, cost)
+    # print_schedule_to_csv(schedule, "sinit")
 
     # plot_changing_gamma()
     # plot_changing_tabu_list_size()
