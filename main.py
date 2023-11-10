@@ -54,9 +54,9 @@ def run_tabu_search_on_coursework_problem(
     verbose: bool = False,
 ):
     problem = CourseworkProblem()
+    problem.get_graph().print_graph()
     schedule, cost = tabu_search(
-        graph=problem.get_graph(),
-        initial_candidate=problem.get_initial_candidate(),
+        problem=problem,
         tabu_list_size=tabu_list_size,
         gamma=gamma,
         iterations=iterations,
@@ -110,7 +110,7 @@ def main():
     # schedule, cost = run_tabu_search_on_class_problem_2()
     schedule, cost = run_tabu_search_on_coursework_problem(
         gamma=10,
-        iterations=10_000_000,
+        iterations=10,
         tabu_list_size=20,
         verbose=False,
     )

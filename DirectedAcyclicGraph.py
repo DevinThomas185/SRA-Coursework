@@ -11,16 +11,25 @@ class DirectedAcyclicGraph:
     ]
 
     def __init__(self):
-        self._jobs = []
+        self._jobs = {}
 
     def add_node(self, job: Job) -> None:
-        self._jobs.append(job)
+        self._jobs[job.get_id()] = job
 
         # Reset the matrix
         self._incidence_matrix = np.zeros((len(self._jobs), len(self._jobs)))
 
+    def get_jobs(self) -> dict:
+        return self._jobs
+
+    def get_job_size(self) -> int:
+        return len(self._jobs)
+
     def add_precendence(self, job: Job, precendence: Job) -> None:
         self._incidence_matrix[job.get_id() - 1, precendence.get_id() - 1] = 1
+
+    def get_incidence_matrix(self) -> np.ndarray:
+        return self._incidence_matrix
 
     def compute_transitive_closure(self) -> None:
         # Compute the transitive closure of the incidence matrix. I.e if matrix[i, j] == 1, and matrix[j, k] == 1, then matrix[i, k] == 1
@@ -43,7 +52,7 @@ class DirectedAcyclicGraph:
         g.attr("node", shape="circle")
 
         # Add node for each job
-        for job in self._jobs:
+        for job in self._jobs.values():
             g.node(str(job.get_id()))
 
         # Add edges

@@ -115,7 +115,6 @@ class CourseworkProblem(Problem):
         self._graph.add_precendence(j30, j14)
         self._graph.add_precendence(j30, j20)
         self._graph.add_precendence(j30, j23)
-        self._graph.add_precendence(j30, j27)
         self._graph.add_precendence(j30, j29)
 
         self._initial_candidate = [

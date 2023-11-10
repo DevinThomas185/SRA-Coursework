@@ -1,5 +1,5 @@
-from Job import Job
 from DirectedAcyclicGraph import DirectedAcyclicGraph
+from Problem import Problem
 from tabulate import tabulate
 
 from utilities import format_number
@@ -37,14 +37,16 @@ def neighbourhood_generator(
 
 
 def tabu_search(
-    graph: DirectedAcyclicGraph,
-    initial_candidate,
+    problem: Problem,
     tabu_list_size: int,
     gamma: int,
     iterations: int,
     cost_function: callable,
     verbose: bool = False,
 ):
+    graph = problem.get_graph()
+    initial_candidate = problem.get_initial_candidate()
+
     best_candidate = initial_candidate
     best_cost = cost_function(initial_candidate)
 
