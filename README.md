@@ -16,7 +16,7 @@ Optimal Schedule Discovery
 positional arguments:
   {tabu_search,vn_search}
                         Select a scheduler
-  {sum_tardiness,sum_weighted_tardiness}
+  {sum_tardiness,sum_weighted_tardiness,total_tardy_jobs,weighted_total_tardy_jobs,maximum_tardiness,maximum_completion_time,sum_completion_time,sum_lateness,sum_weighted_lateness,maximum_lateness}
                         Cost function to evaluate candidate schedules
 
 optional arguments:
@@ -36,7 +36,7 @@ optional arguments:
                         Problem to solve
   --problem_from_file PROBLEM_FROM_FILE
                         Provide problem definition from file
-  ```
+```
 
 Please note that the `--problem` and the `--problem_from_file` arguments are mutually exclusive. This means that you can either specify a pre-defined problem to solve or provide an input file to parse and solve.
 

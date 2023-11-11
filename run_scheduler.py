@@ -6,7 +6,19 @@ from utilities import format_number, print_schedule_to_csv, print_schedule
 # Functions
 from tabu_search import tabu_search
 from variable_neighbourhood_search import variable_neighbourhood_search
-from cost_functions import sum_tardiness, sum_weighted_tardiness
+from cost_functions import (
+    sum_tardiness,
+    sum_weighted_tardiness,
+    total_tardy_jobs,
+    weighted_total_tardy_jobs,
+    maximum_tardiness,
+    maximum_completion_time,
+    sum_completion_time,
+    sum_lateness,
+    sum_weighted_lateness,
+    maximum_lateness,
+)
+
 
 # Problems
 from Problem import Problem
@@ -19,6 +31,14 @@ if __name__ == "__main__":
     cost_function_mappings = {
         "sum_tardiness": sum_tardiness,
         "sum_weighted_tardiness": sum_weighted_tardiness,
+        "total_tardy_jobs": total_tardy_jobs,
+        "weighted_total_tardy_jobs": weighted_total_tardy_jobs,
+        "maximum_tardiness": maximum_tardiness,
+        "maximum_completion_time": maximum_completion_time,
+        "sum_completion_time": sum_completion_time,
+        "sum_lateness": sum_lateness,
+        "sum_weighted_lateness": sum_weighted_lateness,
+        "maximum_lateness": maximum_lateness,
     }
     default_problem_mappings = {
         "ClassProblem1": ClassProblem1,
@@ -83,7 +103,6 @@ if __name__ == "__main__":
         help="Graph optimal schedule",
     )
 
-
     exclusive_group = parser.add_mutually_exclusive_group(required=True)
 
     exclusive_group.add_argument(
@@ -110,7 +129,6 @@ if __name__ == "__main__":
         problem_title = args.problem
         problem = default_problem_mappings[args.problem]()
 
-
     scheduler_title = ""
     schedule = []
     cost = 0
@@ -126,7 +144,6 @@ if __name__ == "__main__":
             strict_tabu_tenure=args.strict_tabu_tenure,
             verbose=args.verbose,
         )
-        
 
     elif args.scheduler == "vn_search":
         scheduler_title = "Variable Neighbourhood Search"
@@ -146,4 +163,7 @@ if __name__ == "__main__":
         print_schedule_to_csv(schedule, args.output_file)
 
     if args.graph_schedule:
-        print_schedule(f"Optimal schedule for {problem_title}, after K={format_number(args.iterations)} of {scheduler_title}, with L={args.tabu_list_size} and γ={args.gamma}, has cost {cost}", schedule)
+        print_schedule(
+            f"Optimal schedule for {problem_title}, after K={format_number(args.iterations)} of {scheduler_title}, with L={args.tabu_list_size} and γ={args.gamma}, has cost {cost}",
+            schedule,
+        )
