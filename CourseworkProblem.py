@@ -10,8 +10,7 @@ class CourseworkProblem(Problem):
         super().__init__()
 
         # Define the number of colors you need
-
-        color_map = plt.get_cmap('nipy_spectral')
+        color_map = plt.get_cmap("nipy_spectral")
         colours = [colors.to_hex(color_map(value)) for value in np.linspace(0, 1, 31)]
 
         j1 = Job(1, due_date=172, type=JobType.ONNX, colour=colours[0])
@@ -150,3 +149,5 @@ class CourseworkProblem(Problem):
             j1,
             j31,
         ]
+
+        super().__post_init__()

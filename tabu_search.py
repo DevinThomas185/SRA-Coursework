@@ -5,32 +5,45 @@ from tabulate import tabulate
 from utilities import format_number
 
 
-# TODO: Needs to account for precedence constraints
 def neighbourhood_generator(
-    candidate: list, last_index_swapped: int, graph: DirectedAcyclicGraph
+    problem: Problem,
+    candidate: list,
+    last_index_swapped: int,
+    strict_tabu_tenure: bool = False,
 ):
-    i = last_index_swapped + 1 if last_index_swapped != len(candidate) - 2 else 0
+    i = (
+        last_index_swapped + 1
+        if last_index_swapped != problem.get_schedule_size() - 2
+        else 0
+    )
 
     while True:
         next_candidate = candidate.copy()
-        next_candidate[i], next_candidate[i + 1] = (
-            next_candidate[i + 1],
-            next_candidate[i],
-        )
 
-        # Check if the swap is valid, then yield candidate
+        job1 = next_candidate[i]
+        job2 = next_candidate[i + 1]
+
+        next_candidate[i] = job2
+        next_candidate[i + 1] = job1
+
+        # Check if the swap is valid against precedences, then yield candidate
         if (
-            graph.get_transitive_closure()[
-                next_candidate[i + 1].get_id() - 1, next_candidate[i].get_id() - 1
+            problem.get_graph().get_transitive_closure()[
+                job1.get_id() - 1, job2.get_id() - 1
             ]
             == 0
         ):
-            yield next_candidate, (next_candidate[i], next_candidate[i + 1]), i
+            # If strict, we ensure that no swaps involving two jobs can be done, if they are already in the Tabu List
+            # The ordering ensures that they will clash with the Tabu List since that entry will also be ordered
+            if strict_tabu_tenure:
+                if job1.get_id() > job2.get_id():
+                    job1, job2 = job2, job1
 
+            yield next_candidate, (job1, job2), i
 
-        i = 0 if i == len(candidate) - 2 else i+1
+        i = 0 if i == len(candidate) - 2 else i + 1
 
-        if i == last_index_swapped+1:
+        if i == last_index_swapped + 1:
             break
 
     yield None, None, None
@@ -42,13 +55,17 @@ def tabu_search(
     gamma: int,
     iterations: int,
     cost_function: callable,
+    strict_tabu_tenure: bool = False,
     verbose: bool = False,
 ):
     graph = problem.get_graph()
     initial_candidate = problem.get_initial_candidate()
 
+    next_candidate = initial_candidate
+    next_code = cost_function(next_candidate)
+
     best_candidate = initial_candidate
-    best_cost = cost_function(initial_candidate)
+    best_cost = cost_function(best_candidate)
 
     current_candidate = initial_candidate
     current_cost = cost_function(initial_candidate)
@@ -59,7 +76,7 @@ def tabu_search(
     # TODO: Figure out how to do this Tabu flag
     tabu = False
 
-    last_index_swapped = len(initial_candidate) - 2
+    last_index_swapped = problem.get_schedule_size() - 2
 
     if verbose:
         table = [
@@ -73,16 +90,17 @@ def tabu_search(
             ]
         ]
 
-    # Compute transitive closure for neighbourhood generation ensuring no candidates
-    # are generated that violate precedence constraints
-    graph.compute_transitive_closure()
-
     for k in range(1, iterations + 1):
         if verbose and k % 1_000 == 0:
             print(f"Iteration {format_number(k)}")
 
+        if next_candidate == None:
+            if verbose:
+                print(f"Local minimum found at iteration {format_number(k)}")
+            break
+
         neighbours = neighbourhood_generator(
-            current_candidate, last_index_swapped, graph
+            problem, current_candidate, last_index_swapped, strict_tabu_tenure
         )
 
         while True:

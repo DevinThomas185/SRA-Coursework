@@ -18,6 +18,9 @@ class ClassProblem1(Problem):
 
         self._initial_candidate = [j4, j2, j1, j3]
 
+        super().__post_init__()
+
+
 
 class ClassProblem2(Problem):
     def __init__(self):
@@ -34,3 +37,5 @@ class ClassProblem2(Problem):
         self._graph.add_node(j4)
 
         self._initial_candidate = [j2, j1, j4, j3]
+
+        super().__post_init__()

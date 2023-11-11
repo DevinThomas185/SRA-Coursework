@@ -13,6 +13,7 @@ def run_tabu_search_on_class_problem_1(
     gamma: int = 20,
     iterations: int = 4,
     tabu_list_size: int = 2,
+    strict_tabu_tenure: bool = False,
     verbose: bool = True,
 ):
     problem = ClassProblem1()
@@ -23,6 +24,7 @@ def run_tabu_search_on_class_problem_1(
         gamma=gamma,
         iterations=iterations,
         cost_function=sum_weighted_tardiness,
+        strict_tabu_tenure=strict_tabu_tenure,
         verbose=verbose,
     )
     return schedule, cost
@@ -121,5 +123,11 @@ def main():
     # plot_changing_tabu_list_size()
 
 
+
+
 if __name__ == "__main__":
     main()
+
+
+
+

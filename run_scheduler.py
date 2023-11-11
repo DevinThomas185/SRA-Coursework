@@ -44,6 +44,11 @@ if __name__ == "__main__":
         help="Tabu list size for Tabu Search",
     )
     parser.add_argument(
+        "--strict_tabu_tenure",
+        action="store_true",
+        help="Strict tabu tenure for Tabu Search",
+    )
+    parser.add_argument(
         "--gamma",
         type=int,
         default=10,
@@ -53,7 +58,13 @@ if __name__ == "__main__":
         "--iterations",
         type=int,
         default=10_000_000,
-        help="Number of iterations for Tabu Search",
+        help="Number of iterations",
+    )
+    parser.add_argument(
+        "--I",
+        type=int,
+        default=10,
+        help="Maximum I for neighbourhood generation in Variable Neighbourhood Search",
     )
     parser.add_argument(
         "--verbose",
@@ -82,25 +93,28 @@ if __name__ == "__main__":
         help="Problem to solve",
     )
     exclusive_group.add_argument(
-        "--input_problem_file",
+        "--problem_from_file",
         type=str,
         default=None,
-        help="Input problem file",
+        help="Provide problem definition from file",
     )
 
     args = parser.parse_args()
 
     problem_title = ""
-    if args.input_problem_file:
-        problem_title = args.input_problem_file
+    if args.problem_from_file:
+        problem_title = args.problem_from_file
         problem = Problem()
-        problem.load_from_file(args.input_problem_file)
+        problem.load_from_file(args.problem_from_file)
     else:
         problem_title = args.problem
         problem = default_problem_mappings[args.problem]()
 
 
     scheduler_title = ""
+    schedule = []
+    cost = 0
+
     if args.scheduler == "tabu_search":
         scheduler_title = "Tabu Search"
         schedule, cost = tabu_search(
@@ -109,22 +123,24 @@ if __name__ == "__main__":
             gamma=args.gamma,
             iterations=args.iterations,
             cost_function=cost_function_mappings[args.cost_function],
+            strict_tabu_tenure=args.strict_tabu_tenure,
             verbose=args.verbose,
         )
-        print(f"Schedule: {schedule}")
-        print(f"Cost: {cost}")
         
 
-    # elif args.scheduler == "vn_search":
-    #     scheduler_title = "Variable Neighbourhood Search"
-    #     schedule, cost = variable_neighbourhood_search(
-    #         problem=problem,
-    #         cost_function=cost_function_mappings[args.cost_function],
-    #         iterations=args.iterations,
-    #         verbose=args.verbose,
-    #     )
-    #     print(f"Schedule: {schedule}")
-    #     print(f"Cost: {cost}")
+    elif args.scheduler == "vn_search":
+        scheduler_title = "Variable Neighbourhood Search"
+        schedule, cost = variable_neighbourhood_search(
+            problem=problem,
+            cost_function=cost_function_mappings[args.cost_function],
+            iterations=args.iterations,
+            I=args.I,
+            verbose=args.verbose,
+        )
+
+    print()
+    print(f"Schedule: {schedule}")
+    print(f"Cost: {cost}")
 
     if args.output_file:
         print_schedule_to_csv(schedule, args.output_file)

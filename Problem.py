@@ -13,8 +13,14 @@ class Problem:
         self._graph = DirectedAcyclicGraph()
         self._initial_candidate = []
 
+    def __post_init__(self):
+        self._graph.compute_transitive_closure()
+
     def get_graph(self) -> DirectedAcyclicGraph:
         return self._graph
+
+    def get_schedule_size(self) -> int:
+        return self._graph.get_job_size()
 
     def get_initial_candidate(self) -> list:
         return self._initial_candidate
