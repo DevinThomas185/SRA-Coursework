@@ -23,7 +23,7 @@ from cost_functions import (
 # Problems
 from Problem import Problem
 from CourseworkProblem import CourseworkProblem
-from ClassProblems import ClassProblem1, ClassProblem2
+from ClassProblems import ClassProblem1, ClassProblem2, MatrixProblem
 
 
 if __name__ == "__main__":
@@ -43,6 +43,7 @@ if __name__ == "__main__":
     default_problem_mappings = {
         "ClassProblem1": ClassProblem1,
         "ClassProblem2": ClassProblem2,
+        "MatrixProblem": MatrixProblem,
         "CourseworkProblem": CourseworkProblem,
     }
 
@@ -135,7 +136,7 @@ if __name__ == "__main__":
 
     if args.scheduler == "tabu_search":
         scheduler_title = "Tabu Search"
-        schedule, cost = tabu_search(
+        schedule, cost, _ = tabu_search(
             problem=problem,
             tabu_list_size=args.tabu_list_size,
             gamma=args.gamma,

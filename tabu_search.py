@@ -66,6 +66,7 @@ def tabu_search(
 
     best_candidate = initial_candidate
     best_cost = cost_function(best_candidate)
+    best_costs = [best_cost]
 
     current_candidate = initial_candidate
     current_cost = cost_function(initial_candidate)
@@ -91,6 +92,7 @@ def tabu_search(
         ]
 
     for k in range(1, iterations + 1):
+        best_costs.append(best_cost)
         if verbose and k % 1_000 == 0:
             print(f"Iteration {format_number(k)}")
 
@@ -113,10 +115,6 @@ def tabu_search(
             next_cost = cost_function(next_candidate)
             delta = current_cost - next_cost
 
-            # Update best candidate if necessary
-            if next_cost < best_cost:
-                best_candidate = next_candidate
-                best_cost = next_cost
 
             # Append row to Tabu Search table
             if verbose:
@@ -140,9 +138,16 @@ def tabu_search(
                 delta > -gamma and swapped_jobs not in tabu_list
             ) or next_cost < best_cost:
                 break
+            
+        # Update best candidate if necessary
+        if next_cost < best_cost:
+            best_candidate = next_candidate
+            best_cost = next_cost
 
         current_candidate = next_candidate
         current_cost = next_cost
+
+
 
         # Append (i, j) to tabu list
         tabu_list.append(swapped_jobs)
@@ -168,4 +173,4 @@ def tabu_search(
         )
         print(f"Best Schedule {best_candidate} with cost {best_cost}")
 
-    return best_candidate, best_cost
+    return best_candidate, best_cost, best_costs

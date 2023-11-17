@@ -17,7 +17,7 @@ def run_tabu_search_on_class_problem_1(
     verbose: bool = True,
 ):
     problem = ClassProblem1()
-    schedule, cost = tabu_search(
+    schedule, cost, best_costs = tabu_search(
         graph=problem.get_graph(),
         initial_candidate=problem.get_initial_candidate(),
         tabu_list_size=tabu_list_size,
@@ -27,7 +27,7 @@ def run_tabu_search_on_class_problem_1(
         strict_tabu_tenure=strict_tabu_tenure,
         verbose=verbose,
     )
-    return schedule, cost
+    return schedule, cost, best_costs
 
 
 def run_tabu_search_on_class_problem_2(
@@ -37,7 +37,7 @@ def run_tabu_search_on_class_problem_2(
     verbose: bool = True,
 ):
     problem = ClassProblem2()
-    schedule, cost = tabu_search(
+    schedule, cost, best_costs = tabu_search(
         graph=problem.get_graph(),
         initial_candidate=problem.get_initial_candidate(),
         tabu_list_size=tabu_list_size,
@@ -46,7 +46,7 @@ def run_tabu_search_on_class_problem_2(
         cost_function=sum_weighted_tardiness,
         verbose=verbose,
     )
-    return schedule, cost
+    return schedule, cost, best_costs
 
 
 def run_tabu_search_on_coursework_problem(
@@ -56,8 +56,7 @@ def run_tabu_search_on_coursework_problem(
     verbose: bool = False,
 ):
     problem = CourseworkProblem()
-    problem.get_graph().print_graph()
-    schedule, cost = tabu_search(
+    schedule, cost, best_costs = tabu_search(
         problem=problem,
         tabu_list_size=tabu_list_size,
         gamma=gamma,
@@ -65,62 +64,90 @@ def run_tabu_search_on_coursework_problem(
         cost_function=sum_tardiness,
         verbose=verbose,
     )
-    return schedule, cost
+    return schedule, cost, best_costs
 
 
-def plot_changing_gamma():
-    gammas = np.arange(1, 101, 1)
+def plot_changing_gamma(iterations: int = 100_000, min_gamma=1, max_gamma=101, step_gamma=5):
+    gammas = np.arange(min_gamma, max_gamma, step_gamma)
     costs = []
+    best_costs_per_gamma = {}
     for gamma in gammas:
-        _, cost = run_tabu_search_on_coursework_problem(
+        _, cost, best_costs = run_tabu_search_on_coursework_problem(
             gamma=gamma,
-            iterations=10_000,
+            iterations=iterations,
         )
         costs.append(cost)
+        best_costs_per_gamma[gamma] = best_costs
 
     # Plot
     plt.plot(gammas, costs)
-    plt.xlabel("Gamma")
+    plt.xlabel("γ")
     plt.xticks(gammas[::5])
     plt.ylabel("Cost")
-    plt.title("Optimal Cost as Gamma Changes")
+    plt.title(f"Optimal Cost after K={format_number(iterations)} Iterations with varying γ")
     plt.show()
 
+    for gamma, bc in best_costs_per_gamma.items():
+        plt.plot(np.arange(iterations + 1), bc, label=f"γ={gamma}")
+    plt.xlabel("Iteration")
+    plt.ylabel("Cost")
+    plt.title(f"Best cost per iteration with different γ")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    plt.show()
+    
 
-def plot_changing_tabu_list_size():
-    tabu_list_sizes = np.arange(1, 101, 1)
+
+def plot_changing_tabu_list_size(iterations: int = 100_000, min_L=1 max_L=101, step_L=5):
+    tabu_list_sizes = np.arange(min_L, max_L, step_L)
     costs = []
-
+    best_costs_per_tabu_list_size = {}
     for tabu_list_size in tabu_list_sizes:
-        _, cost = run_tabu_search_on_coursework_problem(
-            iterations=10_000,
+        _, cost, best_costs = run_tabu_search_on_coursework_problem(
+            iterations=iterations,
             tabu_list_size=tabu_list_size,
         )
         costs.append(cost)
+        best_costs_per_tabu_list_size[tabu_list_size] = best_costs
 
     # Plot
     plt.plot(tabu_list_sizes, costs)
     plt.xlabel("Tabu List Size")
     plt.xticks(tabu_list_sizes[::5])
     plt.ylabel("Cost")
-    plt.title("Optimal Cost as Tabu List Size Changes")
+    plt.title(f"Optimal Cost after K={format_number(iterations)} Iterations with varying Tabu List Size")
+    plt.show()
+
+    for tabu_list_size, bc in best_costs_per_tabu_list_size.items():
+        plt.plot(np.arange(iterations + 1), bc, label=f"L={tabu_list_size}")
+    plt.xlabel("Iteration")
+    plt.ylabel("Cost")
+    plt.title(f"Best cost per iteration with different Tabu List Size")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.show()
 
 
 def main():
-    # schedule, cost = run_tabu_search_on_class_problem_1()
-    # schedule, cost = run_tabu_search_on_class_problem_2()
-    schedule, cost = run_tabu_search_on_coursework_problem(
-        gamma=10,
-        iterations=10,
-        tabu_list_size=20,
-        verbose=False,
-    )
-    print(schedule, cost)
+    # schedule, cost, _ = run_tabu_search_on_class_problem_1()
+    # schedule, cost, _ = run_tabu_search_on_class_problem_2()
+    # schedule, cost, _ = run_tabu_search_on_coursework_problem(
+    #     gamma=10,
+    #     iterations=10,
+    #     tabu_list_size=20,
+    #     verbose=False,
+    # )
+    # print(schedule, cost)
     # print_schedule_to_csv(schedule, "sinit")
 
-    # plot_changing_gamma()
-    # plot_changing_tabu_list_size()
+    test_iterations = 10_000
+    min_gamma = 1
+    max_gamma = 101
+    step_gamma = 5
+    plot_changing_gamma(test_iterations)
+    
+    min_L = 1
+    max_L = 101
+    step_L = 5
+    plot_changing_tabu_list_size(test_iterations)
 
 
 
