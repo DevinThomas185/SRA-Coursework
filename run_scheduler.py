@@ -137,6 +137,7 @@ if __name__ == "__main__":
         problem_title = args.problem_from_file
         problem = Problem()
         problem.load_from_file(args.problem_from_file)
+        problem.__post_init__()
     else:
         problem_title = args.problem
         problem = default_problem_mappings[args.problem]()
