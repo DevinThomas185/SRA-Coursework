@@ -1,5 +1,5 @@
-from Job import Job
-from Problem import Problem
+from classes.Job import Job
+from classes.Problem import Problem
 
 
 class ClassProblem1(Problem):

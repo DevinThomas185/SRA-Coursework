@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from Job import Job
+from classes.Job import Job
 
 
 def format_number(number: int):

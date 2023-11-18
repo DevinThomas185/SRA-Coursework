@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tabu_search import tabu_search
-from variable_neighbourhood_search import variable_neighbourhood_search
-from cost_functions import sum_tardiness, sum_weighted_tardiness
-from utilities import print_schedule, format_number, print_schedule_to_csv
+from schedulers.tabu_search import tabu_search
+from schedulers.variable_neighbourhood_search import variable_neighbourhood_search
+from utilities.cost_functions import sum_tardiness, sum_weighted_tardiness
+from utilities.utilities import print_schedule, format_number, print_schedule_to_csv
 
-from CourseworkProblem import CourseworkProblem
-from ClassProblems import ClassProblem1, ClassProblem2
+from classes.CourseworkProblem import CourseworkProblem
+from classes.ClassProblems import ClassProblem1, ClassProblem2
 
 
 def run_tabu_search_on_class_problem_1(

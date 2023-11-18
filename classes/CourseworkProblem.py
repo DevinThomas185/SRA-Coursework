@@ -1,5 +1,5 @@
-from Job import Job, JobType
-from Problem import Problem
+from classes.Job import Job, JobType
+from classes.Problem import Problem
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import numpy as np

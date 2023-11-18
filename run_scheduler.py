@@ -1,12 +1,12 @@
 import argparse
 
 # Utilities
-from utilities import format_number, print_schedule_to_csv, print_schedule
+from utilities.utilities import format_number, print_schedule_to_csv, print_schedule
 
 # Functions
-from tabu_search import tabu_search
-from variable_neighbourhood_search import variable_neighbourhood_search
-from cost_functions import (
+from schedulers.tabu_search import tabu_search
+from schedulers.variable_neighbourhood_search import variable_neighbourhood_search
+from utilities.cost_functions import (
     sum_tardiness,
     sum_weighted_tardiness,
     total_tardy_jobs,
@@ -21,9 +21,9 @@ from cost_functions import (
 
 
 # Problems
-from Problem import Problem
-from CourseworkProblem import CourseworkProblem
-from ClassProblems import ClassProblem1, ClassProblem2, MatrixProblem
+from classes.Problem import Problem
+from classes.CourseworkProblem import CourseworkProblem
+from classes.ClassProblems import ClassProblem1, ClassProblem2, MatrixProblem
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
-from Job import Job, JobType
-from DirectedAcyclicGraph import DirectedAcyclicGraph
+from classes.Job import Job, JobType
+from classes.DirectedAcyclicGraph import DirectedAcyclicGraph
 import json
 
 

@@ -1,13 +1,13 @@
-from Problem import Problem
+from classes.Problem import Problem
 from tabulate import tabulate
 import numpy as np
-from utilities import format_number, print_execution_to_file
+from utilities.utilities import format_number, print_execution_to_file
 
-from finding_unique_solutions import (
+from utilities.finding_unique_solutions import (
     get_unique_solutions_after_x_adjacent_swaps,
     get_unique_solutions_after_x_random_swaps,
 )
-from tabu_search import tabu_search
+from schedulers.tabu_search import tabu_search
 
 
 def check_schedule_validity(we_have: np.ndarray, problem: Problem):

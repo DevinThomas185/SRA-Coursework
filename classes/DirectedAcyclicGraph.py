@@ -1,5 +1,5 @@
 import numpy as np
-from Job import Job
+from classes.Job import Job
 from graphviz import Digraph
 
 

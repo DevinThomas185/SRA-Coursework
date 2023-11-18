@@ -1,7 +1,7 @@
-from Problem import Problem
+from classes.Problem import Problem
 from tabulate import tabulate
 
-from utilities import format_number, print_execution_to_file
+from utilities.utilities import format_number, print_execution_to_file
 
 
 def neighbourhood_generator(
