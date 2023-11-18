@@ -33,7 +33,10 @@ class Problem:
         self._initial_candidate = initial_candidate
 
     def _get_job_type(self, name: str):
-        return JobType[name.split("_")[0].upper()]
+        try:
+            return JobType[name.split("_")[0].upper()]
+        except KeyError:
+            return None
 
     def _find_initial_candidate(self) -> list:
         levels = []
@@ -84,5 +87,13 @@ class Problem:
 
             for edge in data["edge_set"]:
                 self._graph.add_precendence(jobs[edge[0]], jobs[edge[1]])
+
+            if "processing_times" in data:
+                for node in data["processing_times"]:
+                    jobs[node].set_processing_time(data["processing_times"][node])
+
+            if "weights" in data:
+                for node in data["weights"]:
+                    jobs[node].set_weight(data["weights"][node])
 
             self._find_initial_candidate()

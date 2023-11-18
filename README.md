@@ -49,3 +49,26 @@ Please note that the `--problem` and the `--problem_from_file` arguments are mut
 ```bash
 python run_scheduler.py tabu_search sum_tardiness --iterations 1000 --problem_from_file input.json --graph_schedule --output_file run1
 ```
+
+### 4. Input file format
+
+The problem input file format is a JSON file with the following structure:
+```json
+{
+  "workflow_0": {
+    "edge_set": [["job1", "job2"]],
+    "due_dates": {
+      "job1": 1,
+      "job2": 2
+    },
+    "processing_times": {
+      "job1": 1,
+      "job2": 2
+    },
+    "weights": {
+      "job1": 1,
+      "job2": 2
+    }
+  }
+}
+```

@@ -72,8 +72,14 @@ class Job:
     def get_processing_time(self) -> int:
         return self._processing_time
 
+    def set_processing_time(self, processing_time: int):
+        self._processing_time = processing_time
+
     def get_weight(self) -> int:
         return self._weight
+
+    def set_weight(self, weight: int):
+        self._weight = weight
 
     def get_colour(self) -> str:
         return self._colour

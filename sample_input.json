@@ -1,0 +1,31 @@
+{
+  "workflow_0": {
+    "edge_set": [
+      ["job1", "job2"],
+      ["job2", "job4"],
+      ["job1", "job3"],
+      ["job1", "job5"]
+    ],
+    "due_dates": {
+      "job1": 1,
+      "job2": 2,
+      "job3": 3,
+      "job4": 4,
+      "job5": 5
+    },
+    "processing_times": {
+        "job1": 1,
+        "job2": 2,
+        "job3": 3,
+        "job4": 4,
+        "job5": 5
+    },
+    "weights": {
+        "job1": 1,
+        "job2": 2,
+        "job3": 3,
+        "job4": 4,
+        "job5": 5
+    }
+  }
+}
