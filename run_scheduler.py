@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
     elif args.scheduler == "vn_search":
         scheduler_title = "Variable Neighbourhood Search"
-        schedule, cost = variable_neighbourhood_search(
+        schedule, cost, _ = variable_neighbourhood_search(
             problem=problem,
             cost_function=cost_function_mappings[args.cost_function],
             iterations=args.iterations,

@@ -170,13 +170,15 @@ def tabu_search(
 
     if print_file is not None:
         params = {
-            "Problem": problem.get_title(),
+            "Problem": problem.get_problem_name(),
             "Tabu List Size": tabu_list_size,
             "γ": gamma,
             "Iterations": iterations,
             "Cost Function": cost_function.__name__,
             "Strict Tabu Tenure": strict_tabu_tenure,
         }
-        print_execution_to_file(print_file, print_table, params)
+        print_execution_to_file(
+            print_file, print_table, best_candidate, best_cost, params
+        )
 
     return best_candidate, best_cost, best_costs

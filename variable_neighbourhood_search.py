@@ -108,10 +108,12 @@ def select_random_candidate_from_neighbourhood_i(
             problem=problem,
             tabu_list_size=2,
             gamma=20,
-            iterations=1000,
+            iterations=100,
             cost_function=cost_function,
         )
-        current_schedule_tc = generate_schedule_transitive_closure(next_candidate, problem)
+        current_schedule_tc = generate_schedule_transitive_closure(
+            next_candidate, problem
+        )
 
     return next_candidate, current_schedule_tc
 
@@ -141,9 +143,12 @@ def variable_neighbourhood_search(
     next_cost = cost_function(next_candidate)
     next_candidate_tc = generate_schedule_transitive_closure(next_candidate, problem)
 
+    best_costs = [current_cost]
+
     table = [[0, 0, current_candidate.copy(), current_cost, current_cost]]
 
-    for k in range(1, iterations):
+    for k in range(1, iterations + 1):
+        best_costs.append(current_cost)
         if verbose and k % 1000 == 0:
             print(f"Iteration {format_number(k)}")
 
@@ -195,11 +200,13 @@ def variable_neighbourhood_search(
 
     if print_file is not None:
         params = {
-            "Problem": problem.get_title(),
+            "Problem": problem.get_problem_name(),
             "Iterations": iterations,
             "I": I,
             "Cost Function": cost_function.__name__,
         }
-        print_execution_to_file(print_file, print_table, params)
+        print_execution_to_file(
+            print_file, print_table, current_candidate, current_cost, params
+        )
 
-    return current_candidate, current_cost
+    return current_candidate, current_cost, best_costs

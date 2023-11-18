@@ -42,9 +42,15 @@ def print_schedule_to_csv(schedule: list[Job], csv_name: str) -> None:
         f.write(f"{schedule[-1].get_id()}")
 
 
-def print_execution_to_file(file_name: str, execution: str, params) -> None:
+def print_execution_to_file(
+    file_name: str, execution: str, schedule, cost, params
+) -> None:
     with open(f"{file_name}.txt", "w") as f:
         f.write("Parameters:\n")
         for param, value in params.items():
             f.write(f"{param}: {value}\n")
+        f.write("\n")
+        f.write(f"Best schedule: {schedule}\n")
+        f.write(f"Best cost: {cost}\n")
+        f.write("\n")
         f.write(execution)

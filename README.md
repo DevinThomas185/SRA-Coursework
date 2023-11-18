@@ -32,7 +32,11 @@ optional arguments:
   --output_file OUTPUT_FILE
                         Save schedule to output file
   --graph_schedule      Graph optimal schedule
-  --problem {ClassProblem1,ClassProblem2,CourseworkProblem}
+  --execution_output_file EXECUTION_OUTPUT_FILE
+                        Save execution (AKA verbose output) to output file
+  --apply_local_optimisation
+                        Apply local optimisation in VNS
+  --problem {ClassProblem1,ClassProblem2,MatrixProblem,CourseworkProblem}
                         Problem to solve
   --problem_from_file PROBLEM_FROM_FILE
                         Provide problem definition from file
