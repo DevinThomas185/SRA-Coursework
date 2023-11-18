@@ -103,6 +103,17 @@ if __name__ == "__main__":
         action="store_true",
         help="Graph optimal schedule",
     )
+    parser.add_argument(
+        "--execution_output_file",
+        type=str,
+        default=None,
+        help="Save execution (AKA verbose output) to output file",
+    )
+    parser.add_argument(
+        "--apply_local_optimisation",
+        action="store_true",
+        help="Apply local optimisation in VNS",
+    )
 
     exclusive_group = parser.add_mutually_exclusive_group(required=True)
 
@@ -144,6 +155,7 @@ if __name__ == "__main__":
             cost_function=cost_function_mappings[args.cost_function],
             strict_tabu_tenure=args.strict_tabu_tenure,
             verbose=args.verbose,
+            print_file=args.execution_output_file,
         )
 
     elif args.scheduler == "vn_search":
@@ -154,6 +166,8 @@ if __name__ == "__main__":
             iterations=args.iterations,
             I=args.I,
             verbose=args.verbose,
+            print_file=args.execution_output_file,
+            apply_tabu_search=args.apply_local_optimisation,
         )
 
     print()

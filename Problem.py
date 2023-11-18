@@ -7,6 +7,7 @@ class Problem:
     __slots__ = [
         "_graph",
         "_initial_candidate",
+        "_problem_name",
     ]
 
     def __init__(self):
@@ -16,6 +17,9 @@ class Problem:
     def __post_init__(self):
         self._graph.compute_transitive_closure()
 
+    def get_problem_name(self):
+        return self._problem_name
+
     def get_graph(self) -> DirectedAcyclicGraph:
         return self._graph
 
@@ -24,6 +28,9 @@ class Problem:
 
     def get_initial_candidate(self) -> list:
         return self._initial_candidate
+
+    def set_initial_candidate(self, initial_candidate: list):
+        self._initial_candidate = initial_candidate
 
     def _get_job_type(self, name: str):
         return JobType[name.split("_")[0].upper()]

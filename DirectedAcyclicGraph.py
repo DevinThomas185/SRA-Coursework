@@ -4,11 +4,7 @@ from graphviz import Digraph
 
 
 class DirectedAcyclicGraph:
-    __slots__ = [
-        "_jobs",
-        "_incidence_matrix",
-        "_transitive_closure"
-    ]
+    __slots__ = ["_jobs", "_incidence_matrix", "_transitive_closure"]
 
     def __init__(self):
         self._jobs = {}

@@ -8,6 +8,7 @@ import numpy as np
 class CourseworkProblem(Problem):
     def __init__(self):
         super().__init__()
+        self._problem_name = "Coursework Problem"
 
         # Define the number of colors you need
         color_map = plt.get_cmap("nipy_spectral")

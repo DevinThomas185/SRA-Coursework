@@ -97,7 +97,7 @@ def plot_changing_gamma(iterations: int = 100_000, min_gamma=1, max_gamma=101, s
     
 
 
-def plot_changing_tabu_list_size(iterations: int = 100_000, min_L=1 max_L=101, step_L=5):
+def plot_changing_tabu_list_size(iterations: int = 100_000, min_L=1, max_L=101, step_L=5):
     tabu_list_sizes = np.arange(min_L, max_L, step_L)
     costs = []
     best_costs_per_tabu_list_size = {}
@@ -142,12 +142,12 @@ def main():
     min_gamma = 1
     max_gamma = 101
     step_gamma = 5
-    plot_changing_gamma(test_iterations)
+    plot_changing_gamma(test_iterations, min_gamma, max_gamma, step_gamma)
     
     min_L = 1
     max_L = 101
     step_L = 5
-    plot_changing_tabu_list_size(test_iterations)
+    plot_changing_tabu_list_size(test_iterations, min_L, max_L, step_L)
 
 
 

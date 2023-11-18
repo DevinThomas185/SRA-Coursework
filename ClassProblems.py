@@ -6,6 +6,8 @@ class ClassProblem1(Problem):
     def __init__(self):
         super().__init__()
 
+        self._problem_name = "ClassProblem1"
+
         j1 = Job(1, 1, None, 16, 3)
         j2 = Job(2, 2, None, 11, 4)
         j3 = Job(3, 7, None, 4, 5)
@@ -25,6 +27,8 @@ class ClassProblem2(Problem):
     def __init__(self):
         super().__init__()
 
+        self._problem_name = "ClassProblem2"
+
         j1 = Job(1, 4, None, 10, 14)
         j2 = Job(2, 2, None, 10, 12)
         j3 = Job(3, 1, None, 13, 1)
@@ -43,6 +47,8 @@ class ClassProblem2(Problem):
 class MatrixProblem(Problem):
     def __init__(self):
         super().__init__()
+
+        self._problem_name = "MatrixProblem"
 
         j1 = Job(1, 4, None, 10, 14)
         j2 = Job(2, 2, None, 10, 12)

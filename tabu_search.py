@@ -1,8 +1,7 @@
-from DirectedAcyclicGraph import DirectedAcyclicGraph
 from Problem import Problem
 from tabulate import tabulate
 
-from utilities import format_number
+from utilities import format_number, print_execution_to_file
 
 
 def neighbourhood_generator(
@@ -57,12 +56,12 @@ def tabu_search(
     cost_function: callable,
     strict_tabu_tenure: bool = False,
     verbose: bool = False,
+    print_file: str = None,
 ):
-    graph = problem.get_graph()
     initial_candidate = problem.get_initial_candidate()
 
     next_candidate = initial_candidate
-    next_code = cost_function(next_candidate)
+    next_cost = cost_function(next_candidate)
 
     best_candidate = initial_candidate
     best_cost = cost_function(best_candidate)
@@ -79,17 +78,16 @@ def tabu_search(
 
     last_index_swapped = problem.get_schedule_size() - 2
 
-    if verbose:
-        table = [
-            [
-                0,
-                current_candidate.copy(),
-                current_cost,
-                tabu_list.copy(),
-                best_cost,
-                tabu,
-            ]
+    table = [
+        [
+            0,
+            current_candidate.copy(),
+            current_cost,
+            tabu_list.copy(),
+            best_cost,
+            tabu,
         ]
+    ]
 
     for k in range(1, iterations + 1):
         best_costs.append(best_cost)
@@ -115,9 +113,8 @@ def tabu_search(
             next_cost = cost_function(next_candidate)
             delta = current_cost - next_cost
 
-
             # Append row to Tabu Search table
-            if verbose:
+            if verbose or print_file is not None:
                 # Only track seen candidates if we are printing, since it is needed for the Tabu flag
                 tabu = True if next_candidate in seen_candidates else False
                 seen_candidates.append(next_candidate)
@@ -138,7 +135,7 @@ def tabu_search(
                 delta > -gamma and swapped_jobs not in tabu_list
             ) or next_cost < best_cost:
                 break
-            
+
         # Update best candidate if necessary
         if next_cost < best_cost:
             best_candidate = next_candidate
@@ -147,8 +144,6 @@ def tabu_search(
         current_candidate = next_candidate
         current_cost = next_cost
 
-
-
         # Append (i, j) to tabu list
         tabu_list.append(swapped_jobs)
 
@@ -156,21 +151,32 @@ def tabu_search(
         if len(tabu_list) > tabu_list_size:
             tabu_list.pop(0)
 
+    print_table = tabulate(
+        table,
+        headers=[
+            "Iteration",
+            "Candidate",
+            "Cost",
+            "Tabu List",
+            "Best Cost",
+            "Tabu?",
+        ],
+    )
+
     if verbose:
         print()
-        print(
-            tabulate(
-                table,
-                headers=[
-                    "Solution",
-                    "Candidate",
-                    "Cost",
-                    "Tabu List",
-                    "Best Cost",
-                    "Tabu?",
-                ],
-            )
-        )
+        print(print_table)
         print(f"Best Schedule {best_candidate} with cost {best_cost}")
+
+    if print_file is not None:
+        params = {
+            "Problem": problem.get_title(),
+            "Tabu List Size": tabu_list_size,
+            "γ": gamma,
+            "Iterations": iterations,
+            "Cost Function": cost_function.__name__,
+            "Strict Tabu Tenure": strict_tabu_tenure,
+        }
+        print_execution_to_file(print_file, print_table, params)
 
     return best_candidate, best_cost, best_costs

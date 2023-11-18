@@ -36,7 +36,15 @@ def print_schedule(title: str, schedule: list[Job]):
 
 
 def print_schedule_to_csv(schedule: list[Job], csv_name: str) -> None:
-    with open(csv_name+".csv", "w") as f:
+    with open(csv_name + ".csv", "w") as f:
         for job in schedule[:-1]:
             f.write(f"{job.get_id()}, ")
         f.write(f"{schedule[-1].get_id()}")
+
+
+def print_execution_to_file(file_name: str, execution: str, params) -> None:
+    with open(f"{file_name}.txt", "w") as f:
+        f.write("Parameters:\n")
+        for param, value in params.items():
+            f.write(f"{param}: {value}\n")
+        f.write(execution)
