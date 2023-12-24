@@ -1,4 +1,6 @@
 # SRA Coursework
+This coursework covers local search methods in Scheduling and Resource Allocation, looking at Tabu Search, Variable Neighbourhood Search (VNS) and an augmented version of VNS, utilising a local neighbourhood search.
+
 
 ## How to run
 
